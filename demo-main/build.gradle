@@ -30,6 +30,6 @@ android {
 dependencies {
   implementation project(':library')
   implementation deps.kotlin.stdlib.jdk
-  implementation deps.material
+  implementation "com.google.android.material:material:1.1.0-alpha05"
   implementation deps.androidx.constraintLayout
 }
