@@ -47,11 +47,11 @@ import com.jaredrummler.cyanea.utils.ColorUtils
  */
 open class CyaneaSettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener, OnPreferenceClickListener {
 
-  private lateinit var prefThemePicker: Preference
-  private lateinit var prefColorPrimary: ColorPreferenceCompat
-  private lateinit var prefColorAccent: ColorPreferenceCompat
-  private lateinit var prefColorBackground: ColorPreferenceCompat
-  private lateinit var prefColorNavBar: SwitchPreferenceCompat
+  private var prefThemePicker: Preference? = null
+  private var prefColorPrimary: ColorPreferenceCompat? = null
+  private var prefColorAccent: ColorPreferenceCompat? = null
+  private var prefColorBackground: ColorPreferenceCompat? = null
+  private var prefColorNavBar: SwitchPreferenceCompat? = null
 
   /**
    * The [Cyanea] instance used for styling.
@@ -87,15 +87,15 @@ open class CyaneaSettingsFragment : PreferenceFragmentCompat(), OnPreferenceChan
     prefColorBackground = findPreference(PREF_COLOR_BACKGROUND)
     prefColorNavBar = findPreference(PREF_COLOR_NAV_BAR)
 
-    prefColorPrimary.saveValue(cyanea.primary)
-    prefColorAccent.saveValue(cyanea.accent)
-    prefColorBackground.saveValue(cyanea.backgroundColor)
+    prefColorPrimary?.saveValue(cyanea.primary)
+    prefColorAccent?.saveValue(cyanea.accent)
+    prefColorBackground?.saveValue(cyanea.backgroundColor)
 
-    prefThemePicker.onPreferenceClickListener = this
-    prefColorPrimary.onPreferenceChangeListener = this
-    prefColorAccent.onPreferenceChangeListener = this
-    prefColorBackground.onPreferenceChangeListener = this
-    prefColorNavBar.onPreferenceChangeListener = this
+    prefThemePicker?.onPreferenceClickListener = this
+    prefColorPrimary?.onPreferenceChangeListener = this
+    prefColorAccent?.onPreferenceChangeListener = this
+    prefColorBackground?.onPreferenceChangeListener = this
+    prefColorNavBar?.onPreferenceChangeListener = this
 
     setupNavBarPref()
   }
@@ -168,21 +168,21 @@ open class CyaneaSettingsFragment : PreferenceFragmentCompat(), OnPreferenceChan
 
   private fun setupNavBarPref() {
     ColorUtils.isDarkColor(cyanea.primary, 0.75).let { isDarkEnough ->
-      prefColorNavBar.isEnabled = isDarkEnough || VERSION.SDK_INT >= VERSION_CODES.O
+      prefColorNavBar?.isEnabled = isDarkEnough || VERSION.SDK_INT >= VERSION_CODES.O
     }
     val isColored = if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       activity?.window?.navigationBarColor == cyanea.primary
     } else false
-    prefColorNavBar.isChecked = cyanea.shouldTintNavBar || isColored
+    prefColorNavBar?.isChecked = cyanea.shouldTintNavBar || isColored
     val sysBarConfig = SystemBarTint(requireActivity()).sysBarConfig
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT || !sysBarConfig.hasNavigationBar) {
-      findPreference<PreferenceCategory>(PREF_CATEGORY).run {
+      findPreference<PreferenceCategory>(PREF_CATEGORY)?.run {
         removePreference(prefColorNavBar)
       }
     }
   }
 
-  private inline fun <reified T : Preference> findPreference(key: String): T = super.findPreference(key) as T
+  private inline fun <reified T : Preference> findPreference(key: String): T? = super.findPreference(key)
 
   companion object {
     private const val PREF_CATEGORY = "cyanea_preference_category"

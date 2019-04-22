@@ -97,6 +97,7 @@ import kotlin.properties.Delegates
  *
  * After editing a theme you must recreate the activity for changes to apply.
  */
+@SuppressLint("SupportAnnotationUsage")
 class Cyanea private constructor(private val prefs: SharedPreferences) {
 
   /** The primary color displayed most frequently across your app */
